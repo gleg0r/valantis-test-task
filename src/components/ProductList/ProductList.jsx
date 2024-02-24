@@ -6,14 +6,18 @@ export default function ProductList() {
   const itemsId = useSelector(state => state.getData.ids);
   const items = useSelector(state => state.getData.items);
   const status = useSelector(state => state.getData.status);
+  const statusItems = useSelector(state => state.getData.statusItems);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(itemsId.length !== 0 && status !== 'loading') dispatch(fetchData({ action: "get_items", params: { "ids": itemsId } }))
-  }, [dispatch, itemsId, status ])
+    if(statusItems !== 'resolved' && status !== 'resolved') {
+      dispatch(fetchData({ action: "get_items", params: { "ids": itemsId } }))
+      console.log('hello')
+    }
+  }, [dispatch, itemsId, status, statusItems])
 
   return ( 
-    status === 'resolved' ? <div> 
+    <div> 
       {
         items.map((item, index) => {
 
@@ -26,9 +30,6 @@ export default function ProductList() {
           </ul>
         })
       }
-    </div> :
-    <div>
-
     </div>
   )
 }

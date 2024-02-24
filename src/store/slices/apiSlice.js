@@ -30,16 +30,21 @@ const apiSlice = createSlice({
     ids: [],
     items: [],
     status: null,
+    statusGetIds: null,
+    statusGetItems: null,
+    currentPage: 0,
+    productsPerPage: 50,
     error: null,
-    itemsLength: null,
   },
   reducers: {
-    setItemsLength(state, action) {
-      state.itemsLength = action.payload;
+    setStatus(state, action) {
+      state.statusGetIds = action.payload;
+      state.statusGetItems = action.payload;
+      state.status = action.payload;
     }
   },
   extraReducers: builder => {
-    builder.addCase(fetchData.pending, state => {
+    builder.addCase(fetchData.pending, (state) => {
       state.status = 'loading';
       state.error = null;
     });
@@ -47,12 +52,12 @@ const apiSlice = createSlice({
       switch (action.payload.type) {
         case 'get_ids': 
           state.ids = action.payload.data;
+          state.statusGetIds = 'resolved';
           break;
         case "get_items":
           const newData = filterData(action.payload.data)
           state.items = newData;
-          state.itemsLength = newData.length;
-          state.status = 'resolved';
+          state.statusGetItems = 'resolved';
           break;
         default: state.error = 'error type'
       }
@@ -65,7 +70,7 @@ const apiSlice = createSlice({
 })
 
 export const {
-  setItemsLength
+  setStatus
 } = apiSlice.actions;
 
 export default apiSlice.reducer;
