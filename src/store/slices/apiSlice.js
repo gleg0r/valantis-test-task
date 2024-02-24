@@ -17,7 +17,7 @@ export const fetchData = createAsyncThunk(
         params: params.params
       })
     }
-    const data = await fetch('http://api.valantis.store:40000/', options)
+    const data = await fetch('https://api.valantis.store:41000/', options)
       .then(res => res.ok ? res.json() : Promise.reject(res))
       .catch(err => console.log(err.status, err.statusText));
     return { data: data.result, type: params.action };
