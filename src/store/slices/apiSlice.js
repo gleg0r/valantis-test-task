@@ -31,11 +31,12 @@ const apiSlice = createSlice({
     items: [],
     status: null,
     error: null,
+    itemsLength: null,
   },
   reducers: {
-    getIds(state) {
-        return state.ids;
-      }
+    setItemsLength(state, action) {
+      state.itemsLength = action.payload;
+    }
   },
   extraReducers: builder => {
     builder.addCase(fetchData.pending, state => {
@@ -43,7 +44,6 @@ const apiSlice = createSlice({
       state.error = null;
     });
     builder.addCase(fetchData.fulfilled, (state, action) => {
-      state.status = 'resolved';
       switch (action.payload.type) {
         case 'get_ids': 
           state.ids = action.payload.data;
@@ -51,6 +51,8 @@ const apiSlice = createSlice({
         case "get_items":
           const newData = filterData(action.payload.data)
           state.items = newData;
+          state.itemsLength = newData.length;
+          state.status = 'resolved';
           break;
         default: state.error = 'error type'
       }
@@ -63,7 +65,7 @@ const apiSlice = createSlice({
 })
 
 export const {
-  getIds
+  setItemsLength
 } = apiSlice.actions;
 
 export default apiSlice.reducer;

@@ -1,25 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from '../../store/slices/apiSlice';
 
 export default function ProductList() {
-  //const [uniqueIds, setUniqueIds] = useState([]);
   const itemsId = useSelector(state => state.getData.ids);
   const items = useSelector(state => state.getData.items);
+  const status = useSelector(state => state.getData.status);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchData({ action: "get_items", params: { "ids": itemsId } }))
-  }, [dispatch, itemsId])
-
-  console.log(items)
+    if(itemsId.length !== 0 && status !== 'loading') dispatch(fetchData({ action: "get_items", params: { "ids": itemsId } }))
+  }, [dispatch, itemsId, status ])
 
   return ( 
-    <div> 
+    status === 'resolved' ? <div> 
       {
         items.map((item, index) => {
 
           return <ul key={index}>
+            <li>{index}</li>
             <li>{item.brand !== null ? item.brand : "This product doesn't have brand"}</li>
             <li>{item.id}</li>
             <li>{item.price}</li>
@@ -27,6 +26,9 @@ export default function ProductList() {
           </ul>
         })
       }
+    </div> :
+    <div>
+
     </div>
   )
 }
