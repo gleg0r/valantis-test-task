@@ -13,6 +13,7 @@ export default function ProductList() {
   useEffect(() => {
     if(statusItems !== 'loading') {
       dispatch(fetchData({ action: "get_items", params: { "ids": itemsId } }))
+      console.log('hi')
     }
   }, [dispatch, itemsId, status, statusItems])
 
@@ -22,7 +23,6 @@ export default function ProductList() {
         items.map((item, index) => {
 
           return <ul key={index}>
-            <li>{index}</li>
             <li>{item.brand !== null ? item.brand : "This product doesn't have brand"}</li>
             <li>{item.id}</li>
             <li>{item.price}</li>
