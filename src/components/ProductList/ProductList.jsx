@@ -11,9 +11,8 @@ export default function ProductList() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(statusItems === 'loading') {
+    if(statusItems !== 'loading') {
       dispatch(fetchData({ action: "get_items", params: { "ids": itemsId } }))
-      console.log('hello')
     }
   }, [dispatch, itemsId, status, statusItems])
 

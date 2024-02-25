@@ -45,7 +45,10 @@ const apiSlice = createSlice({
     },
     setStatusGetItems(state, action) {
       state.statusGetItems = action.payload;
-    }
+    },
+    setCurrentPage(state, action) {
+      state.currentPage = action.payload;
+    },
   },
   extraReducers: builder => {
     builder.addCase(fetchData.pending, (state) => {
@@ -75,7 +78,8 @@ const apiSlice = createSlice({
 
 export const {
   setStatus,
-  setStatusGetItems
+  setStatusGetItems,
+  setCurrentPage,
 } = apiSlice.actions;
 
 export default apiSlice.reducer;

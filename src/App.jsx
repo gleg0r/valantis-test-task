@@ -1,7 +1,7 @@
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchData, setStatusGetItems } from './store/slices/apiSlice';
+import { fetchData, setCurrentPage, setStatusGetItems, setStatus } from './store/slices/apiSlice';
 import ProductList from './components/ProductList/ProductList';
 
 function App() {
@@ -18,23 +18,17 @@ function App() {
     }
   }, [dispatch, statusGetIds, status, offset, limit]);
 
-  // function prevPage() {
-  //   if(offset === 0) return;
-  //   else setOffset((prev) => prev - 50);
-  //   dispatch(setStatus(null));
-  // }
-
-  // function nextPage() {
-  //   setOffset((prev) => prev + 50);
-  //   dispatch(setStatus(null));
-  // }
+  function nextPage() {
+    dispatch(setCurrentPage(offset + 50));
+    dispatch(setStatus(null));
+  }
 
   return (
     <div className="App">
       <div>
         <button >Prev</button>
-        <h3>{offset /*/ 50 + 1*/}</h3>
-        <button>Next</button>
+        <h3>{offset / 50 + 1}</h3>
+        <button onClick={() => nextPage()}>Next</button>
       </div>
       <ProductList />
     </div>
