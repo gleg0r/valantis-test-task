@@ -1,7 +1,7 @@
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchData } from './store/slices/apiSlice';
+import { fetchData, setStatusGetItems } from './store/slices/apiSlice';
 import ProductList from './components/ProductList/ProductList';
 
 function App() {
@@ -14,6 +14,7 @@ function App() {
   useEffect(() => {
     if(statusGetIds !== 'resolved' && status !== 'loading') {
       dispatch(fetchData({action: "get_ids", params: {"offset": offset, "limit": limit}}))
+      dispatch(setStatusGetItems('loading'))
     }
   }, [dispatch, statusGetIds, status, offset, limit]);
 

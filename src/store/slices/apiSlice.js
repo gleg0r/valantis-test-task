@@ -41,6 +41,9 @@ const apiSlice = createSlice({
       state.statusGetIds = action.payload;
       state.statusGetItems = action.payload;
       state.status = action.payload;
+    },
+    setStatusGetItems(state, action) {
+      state.statusGetItems = action.payload;
     }
   },
   extraReducers: builder => {
@@ -70,7 +73,8 @@ const apiSlice = createSlice({
 })
 
 export const {
-  setStatus
+  setStatus,
+  setStatusGetItems
 } = apiSlice.actions;
 
 export default apiSlice.reducer;
