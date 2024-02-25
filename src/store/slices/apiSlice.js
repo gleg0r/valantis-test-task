@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import filterData from "../helpers/filterData";
 import dateHelper from "../helpers/dateHelper";
 import md5 from "md5";
+import errorHandler from "../helpers/errorHandler";
 
 export const fetchData = createAsyncThunk(
   'api/fetchData',
@@ -19,7 +20,7 @@ export const fetchData = createAsyncThunk(
     }
     const data = await fetch('https://api.valantis.store:41000/', options)
       .then(res => res.ok ? res.json() : Promise.reject(res))
-      .catch(err => console.log(err.status, err.statusText));
+      .catch(err => console.log(err.status, errorHandler(err.status)));
     return { data: data.result, type: params.action };
   }
 )
