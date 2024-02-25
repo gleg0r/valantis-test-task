@@ -1,0 +1,23 @@
+@import '../../styles/variables.scss';
+
+.dropdown {
+  display: flex;
+  gap: 10px;
+  &__list {
+    border: 2px solid $blueColor;
+    border-radius: 16px;
+  }
+  &__item {
+    display: none;
+  }
+  &__item_active {
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: .3s;
+    border-radius: 12px;
+    &:hover {
+      background: $blueColor;
+      color: #fff;
+    }
+  }
+}

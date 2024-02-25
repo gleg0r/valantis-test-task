@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@reduxjs/toolkit": "^2.2.1",
+    "classnames": "^2.5.1",
     "md5": "^2.3.0",
     "react-redux": "^9.1.0",
     "redux": "^5.0.1",

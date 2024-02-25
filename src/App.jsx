@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchData, setCurrentPage, setStatusGetItems, setStatus } from './store/slices/apiSlice';
 import ProductList from './components/ProductList/ProductList';
+import DropDown from './components/DropDown/DropDown';
 
 function App() {
   const offset = useSelector(state => state.getData.currentPage);
@@ -38,6 +39,7 @@ function App() {
         <h3>{offset / 50 + 1}</h3>
         <button onClick={() => nextPage()}>Next</button>
       </div>
+      <DropDown />
       <ProductList />
     </div>
   );
