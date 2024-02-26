@@ -9,15 +9,11 @@ function App() {
   const offset = useSelector(state => state.getData.currentPage);
   const limit = useSelector(state => state.getData.productsPerPage);
   const status = useSelector(state => state.getData.status)
-  // const statusGetIds = useSelector(state => state.getData.statusGetIds);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if(status === 'error' || ( status !== 'loading' && status !== 'resolved')) {
-      dispatch(fetchData({action: "get_ids", params: {"offset": offset, "limit": limit}})).then((res) => {
-        dispatch(fetchData({action: "get_items", params: {"ids": res.payload.data}}));
-      })
-      //dispatch(setStatusGetItems('loading'))
+      dispatch(fetchData({action: "get_ids", params: {"offset": offset, "limit": limit}}))
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offset, status]);

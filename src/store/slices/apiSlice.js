@@ -18,16 +18,27 @@ export const fetchData = createAsyncThunk(
         params: params.params
       })
     }
-    const data = await fetch('https://api.valantis.store:41000/', options)
+    const ids = await fetch('https://api.valantis.store:41000/', options)
       .then(res => res.ok ? res.json() : Promise.reject(res))
       .catch(err => console.log(err.status, errorHandler(err.status)));
-    return { data: data.result, type: params.action };
+    const items = await fetch('https://api.valantis.store:41000/', {
+      method: 'POST',
+      headers: options.headers,
+      body: JSON.stringify({
+        action: "get_items",
+        params: {"ids": ids.result}
+      })
+    }).then(res => res.ok ? res.json() : Promise.reject(res))
+      .catch(err => console.log(err.status, errorHandler(err.status)))
+      
+    return items.result;
   }
 )
 
 const apiSlice = createSlice({
   name: 'api',
   initialState: {
+    ids: [],
     items: [],
     status: null,
     currentPage: 0,
@@ -48,15 +59,11 @@ const apiSlice = createSlice({
       state.error = null;
     });
     builder.addCase(fetchData.fulfilled, (state, action) => {
-      switch (action.payload.type) {
-        case "get_items":
-          const newData = filterData(action.payload.data)
-          state.items = newData;
-          state.status = 'resolved';
-          break;
-        default: state.error = 'error type'
+        const newData = filterData(action.payload)
+        state.items = newData;
+        state.status = 'resolved';
       }
-    });
+    );
     builder.addCase(fetchData.rejected, (state, action) => {
       state.status = 'error';
       state.error = action.payload;
@@ -66,6 +73,7 @@ const apiSlice = createSlice({
 
 export const {
   setStatus,
+  setStatusGetItems,
   setCurrentPage,
 } = apiSlice.actions;
 

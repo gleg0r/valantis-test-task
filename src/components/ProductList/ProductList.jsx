@@ -4,14 +4,6 @@ import s from './style.module.scss';
 export default function ProductList() {
   const items = useSelector(state => state.getData.items);
   const status = useSelector(state => state.getData.status);
-  //const statusItems = useSelector(state => state.getData.statusGetItems);
-  //const dispatch = useDispatch();
-  console.log(items);
-  // useEffect(() => {
-  //   if(statusItems !== 'loading' || status === 'error') {
-  //     dispatch(fetchData({ action: "get_items", params: { "ids": itemsId } }))
-  //   }
-  // }, [dispatch, itemsId, status, statusItems])
 
   return ( 
     status === 'resolved' ? <div> 
