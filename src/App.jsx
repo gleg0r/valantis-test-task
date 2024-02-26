@@ -1,7 +1,7 @@
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchData, setCurrentPage, setStatusGetItems, setStatus } from './store/slices/apiSlice';
+import { fetchData, setCurrentPage, setStatus } from './store/slices/apiSlice';
 import ProductList from './components/ProductList/ProductList';
 import DropDown from './components/DropDown/DropDown';
 
@@ -9,16 +9,18 @@ function App() {
   const offset = useSelector(state => state.getData.currentPage);
   const limit = useSelector(state => state.getData.productsPerPage);
   const status = useSelector(state => state.getData.status)
-  const statusGetIds = useSelector(state => state.getData.statusGetIds);
-  const isCountFifty = useSelector(state => state.getData.isCountFifty);
+  // const statusGetIds = useSelector(state => state.getData.statusGetIds);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(statusGetIds !== 'resolved' && status !== 'loading' ) {
-      dispatch(fetchData({action: "get_ids", params: {"offset": offset, "limit": limit}}))
-      dispatch(setStatusGetItems('loading'))
+    if(status === 'error' || ( status !== 'loading' && status !== 'resolved')) {
+      dispatch(fetchData({action: "get_ids", params: {"offset": offset, "limit": limit}})).then((res) => {
+        dispatch(fetchData({action: "get_items", params: {"ids": res.payload.data}}));
+      })
+      //dispatch(setStatusGetItems('loading'))
     }
-  }, [dispatch, statusGetIds, status, offset, limit, isCountFifty]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offset, status]);
 
   function nextPage() {
     if(offset === 8050) return;

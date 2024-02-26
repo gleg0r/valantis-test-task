@@ -28,23 +28,15 @@ export const fetchData = createAsyncThunk(
 const apiSlice = createSlice({
   name: 'api',
   initialState: {
-    ids: [],
     items: [],
     status: null,
-    statusGetIds: null,
-    statusGetItems: null,
     currentPage: 0,
     productsPerPage: 50,
     error: null,
   },
   reducers: {
     setStatus(state, action) {
-      state.statusGetIds = action.payload;
-      state.statusGetItems = action.payload;
       state.status = action.payload;
-    },
-    setStatusGetItems(state, action) {
-      state.statusGetItems = action.payload;
     },
     setCurrentPage(state, action) {
       state.currentPage = action.payload;
@@ -57,14 +49,10 @@ const apiSlice = createSlice({
     });
     builder.addCase(fetchData.fulfilled, (state, action) => {
       switch (action.payload.type) {
-        case 'get_ids': 
-          state.ids = action.payload.data;
-          state.statusGetIds = 'resolved';
-          break;
         case "get_items":
           const newData = filterData(action.payload.data)
           state.items = newData;
-          state.statusGetItems = 'resolved';
+          state.status = 'resolved';
           break;
         default: state.error = 'error type'
       }
@@ -78,7 +66,6 @@ const apiSlice = createSlice({
 
 export const {
   setStatus,
-  setStatusGetItems,
   setCurrentPage,
 } = apiSlice.actions;
 
