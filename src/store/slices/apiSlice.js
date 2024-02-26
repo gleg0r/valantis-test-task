@@ -38,7 +38,6 @@ export const fetchData = createAsyncThunk(
 const apiSlice = createSlice({
   name: 'api',
   initialState: {
-    ids: [],
     items: [],
     status: null,
     currentPage: 0,
@@ -52,6 +51,9 @@ const apiSlice = createSlice({
     setCurrentPage(state, action) {
       state.currentPage = action.payload;
     },
+    setProductPerPage(state, action) {
+      state.productsPerPage = action.payload;
+    }
   },
   extraReducers: builder => {
     builder.addCase(fetchData.pending, (state) => {
@@ -73,8 +75,8 @@ const apiSlice = createSlice({
 
 export const {
   setStatus,
-  setStatusGetItems,
   setCurrentPage,
+  setProductPerPage
 } = apiSlice.actions;
 
 export default apiSlice.reducer;

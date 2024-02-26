@@ -9,8 +9,8 @@ export default function ProductList() {
     status === 'resolved' ? <div> 
       {
         items.map((item, index) => {
-
           return <ul key={index}>
+            <li>{index}</li>
             <li>{item.brand !== null ? item.brand : "This product doesn't have brand"}</li>
             <li>{item.id}</li>
             <li>{item.price}</li>

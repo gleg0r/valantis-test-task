@@ -26,7 +26,7 @@ export default function DropDown() {
       <ul onClick={() => handleClick()} className={s.dropdown__list}>
         {
           filters.map((item, index) => {
-            return <li onClick={() => setFilter(index)} className={cn(
+            return <li key={index} onClick={() => setFilter(index)} className={cn(
               isDropDownOpened 
                 ? s.dropdown__item_active
                 : activeFilter === index
