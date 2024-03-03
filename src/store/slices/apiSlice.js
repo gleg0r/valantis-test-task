@@ -18,21 +18,18 @@ export const fetchData = createAsyncThunk(
         params: params.params
       })
     }
-    let items;
-    let ids;
-
-      ids = await fetch('https://api.valantis.store:41000/', options)
-      .then(res => res.ok ? res.json() : Promise.reject(res))
-      .catch(err => {console.log(err.status, errorHandler(err.status))});
-      items = await fetch('https://api.valantis.store:41000/', {
-      method: 'POST',
-      headers: options.headers,
-      body: JSON.stringify({
-        action: "get_items",
-        params: {"ids": !params.filter.isFilterRequest ? ids.result : ids.result.slice(params.filter.filterCurrentPage, params.filter.filterProductsPerPage)}
-      })
-    }).then(res => res.ok ? res.json() : Promise.reject(res))
-      .catch(err => {console.log(err.status, errorHandler(err.status))})
+    const ids = await fetch('https://api.valantis.store:41000/', options)
+    .then(res => res.ok ? res.json() : Promise.reject(res))
+    .catch(err => {console.log(err.status, errorHandler(err.status))});
+    const items = await fetch('https://api.valantis.store:41000/', {
+    method: 'POST',
+    headers: options.headers,
+    body: JSON.stringify({
+      action: "get_items",
+      params: {"ids": !params.filter.isFilterRequest ? ids.result : ids.result.slice(params.filter.filterCurrentPage, params.filter.filterProductsPerPage)}
+    })
+  }).then(res => res.ok ? res.json() : Promise.reject(res))
+    .catch(err => {console.log(err.status, errorHandler(err.status))})
 
     return { ids, items }
   }
@@ -78,10 +75,9 @@ const apiSlice = createSlice({
     });
     builder.addCase(fetchData.fulfilled, (state, action) => {
         state.ids = action.payload.ids.result;
-        const newData = filterData(action.payload.items.result);
-        state.items = newData;
-        state.status = action.payload.items.result !== undefined ? 'resolved' : 'error';
-        console.log(action)
+        console.log(action.payload.items)
+        state.items= action.payload.items ? action.payload.items.result.filter((v,i,a)=>a.findIndex(v2=>(v2.id===v.id))===i) : [];
+        state.status = action.payload.items ? 'resolved' : 'error';
       }
     );
     builder.addCase(fetchData.rejected, (state, action) => {

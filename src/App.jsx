@@ -71,7 +71,7 @@ function App() {
     <div className="App">
       <div>
         <button onClick={() => prevPage()}>Prev</button>
-        <h3>{Math.floor(currentPage / 50 + 1)}</h3>
+        <h3>{!isFilterRequest ? Math.floor(currentPage / 50 + 1) : (filterCurrentPage / 50 + 1)}</h3>
         <button onClick={() => nextPage()}>Next</button>
       </div>
       <DropDown />

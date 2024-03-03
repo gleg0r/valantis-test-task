@@ -12,7 +12,7 @@ const filters = [
 ]
 
 export default function DropDown() {
-  const { ids, isFilterRequest, status, currentPage, filterCurrentPage, filterProductsPerPage } = useSelector(state => state.getData);
+  const {  isFilterRequest, status, filterCurrentPage, filterProductsPerPage } = useSelector(state => state.getData);
   const [choosenFilter, setChoosenFilter] = useState('none');
   const [isOpened, setIsOpened] = useState(false);
   const [filterText, setFilterText] = useState(null);
@@ -55,8 +55,6 @@ export default function DropDown() {
     dispatch(setTypeRequest(true));
     dispatch(setStatus(null));
   }
-
-  console.log(filterCurrentPage, filterProductsPerPage)
 
   return(
     <div className={s.dropdown}>
