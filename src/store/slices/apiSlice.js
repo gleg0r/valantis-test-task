@@ -34,9 +34,6 @@ export const fetchData = createAsyncThunk(
     }).then(res => res.ok ? res.json() : Promise.reject(res))
       .catch(err => {console.log(err.status, errorHandler(err.status))})
 
-
-    
-      
     return { ids, items }
   }
 )
@@ -83,7 +80,7 @@ const apiSlice = createSlice({
         state.ids = action.payload.ids.result;
         const newData = filterData(action.payload.items.result);
         state.items = newData;
-        state.status = 'resolved';
+        state.status = action.payload.items.result !== undefined ? 'resolved' : 'error';
         console.log(action)
       }
     );
