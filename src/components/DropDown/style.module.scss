@@ -2,22 +2,26 @@
 
 .dropdown {
   display: flex;
-  gap: 10px;
-  &__list {
-    border: 2px solid $blueColor;
-    border-radius: 16px;
+  position: relative;
+  &__selected {
+    cursor: pointer;
+    padding: 8px;
+    border: 2px solid #282828;
+    margin: 10px;
   }
-  &__item {
-    display: none;
+  &__select {
+    position: absolute;
+    top: 36px;
+    z-index: 1;
   }
-  &__item_active {
-    padding: 8px 16px;
+  &__option {
+    background: #282828;
+    color: #FDFAFF;
     cursor: pointer;
     transition: .3s;
-    border-radius: 12px;
+    padding: 8px;
     &:hover {
       background: $blueColor;
-      color: #fff;
     }
   }
 }

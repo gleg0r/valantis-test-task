@@ -18,31 +18,41 @@ export const fetchData = createAsyncThunk(
         params: params.params
       })
     }
-    const ids = await fetch('https://api.valantis.store:41000/', options)
+    let items;
+    let ids;
+
+      ids = await fetch('https://api.valantis.store:41000/', options)
       .then(res => res.ok ? res.json() : Promise.reject(res))
-      .catch(err => console.log(err.status, errorHandler(err.status)));
-    const items = await fetch('https://api.valantis.store:41000/', {
+      .catch(err => {console.log(err.status, errorHandler(err.status))});
+      items = await fetch('https://api.valantis.store:41000/', {
       method: 'POST',
       headers: options.headers,
       body: JSON.stringify({
         action: "get_items",
-        params: {"ids": ids.result}
+        params: {"ids": !params.filter.isFilterRequest ? ids.result : ids.result.slice(params.filter.filterCurrentPage, params.filter.filterProductsPerPage)}
       })
     }).then(res => res.ok ? res.json() : Promise.reject(res))
-      .catch(err => console.log(err.status, errorHandler(err.status)))
+      .catch(err => {console.log(err.status, errorHandler(err.status))})
+
+
+    
       
-    return items.result;
+    return { ids, items }
   }
 )
 
 const apiSlice = createSlice({
   name: 'api',
   initialState: {
+    ids: [],
     items: [],
     status: null,
     currentPage: 0,
     productsPerPage: 50,
     error: null,
+    isFilterRequest: false,
+    filterCurrentPage: 0,
+    filterProductsPerPage: 50,
   },
   reducers: {
     setStatus(state, action) {
@@ -53,6 +63,15 @@ const apiSlice = createSlice({
     },
     setProductPerPage(state, action) {
       state.productsPerPage = action.payload;
+    }, 
+    setTypeRequest(state, action) {
+      state.isFilterRequest = action.payload;
+    },
+    setFilterCurrentPage(state, action) {
+      state.filterCurrentPage = action.payload;
+    },
+    setFilterProductsPerPage(state, action) {
+      state.filterProductsPerPage = action.payload;
     }
   },
   extraReducers: builder => {
@@ -61,9 +80,11 @@ const apiSlice = createSlice({
       state.error = null;
     });
     builder.addCase(fetchData.fulfilled, (state, action) => {
-        const newData = filterData(action.payload)
+        state.ids = action.payload.ids.result;
+        const newData = filterData(action.payload.items.result);
         state.items = newData;
         state.status = 'resolved';
+        console.log(action)
       }
     );
     builder.addCase(fetchData.rejected, (state, action) => {
@@ -76,7 +97,10 @@ const apiSlice = createSlice({
 export const {
   setStatus,
   setCurrentPage,
-  setProductPerPage
+  setProductPerPage,
+  setTypeRequest,
+  setFilterCurrentPage,
+  setFilterProductsPerPage
 } = apiSlice.actions;
 
 export default apiSlice.reducer;
