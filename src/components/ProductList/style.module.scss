@@ -1,5 +1,50 @@
 @import '../../styles/variables.scss';
 
+.products {
+  display: grid;
+  width: 1440px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: auto;
+  grid-column-gap: 40px;
+  grid-row-gap: 40px;
+  padding: 20px;
+  @media (max-width: 1440px) {
+    width: 1024px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 1024px) {
+    width: 768px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 768px) {
+    width: 300px;
+    grid-column-gap: 0;
+    grid-row-gap: 20px;
+    grid-template-columns: repeat(1, 1fr);
+    padding: 0px;
+  }
+  &__list {
+    width: 300px;
+    background: $blackColor;
+    padding: 16px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: .3s;
+    animation: appearing 0.5s linear;
+    &:hover {
+      filter: drop-shadow(0px 0px 15px $blueColor)
+    }
+  }
+  &__item {
+    @include RobotoRegular;
+    color: $whiteColor;
+    line-height: 28px;
+    cursor: pointer;
+  }
+}
+
 .loading {
   animation: loading 1s linear infinite;
   width: 40px;

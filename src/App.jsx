@@ -1,4 +1,4 @@
-import './App.css';
+import s from "./App.module.scss"
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { 
@@ -51,7 +51,7 @@ function App() {
   }
 
   function prevPage() {
-    //if(currentPage - 50 < 0) return;
+    if(currentPage - 50 < 0) return;
     if(!isFilterRequest) {
       if((currentPage - 50)/50 < 1) {
         dispatch(setCurrentPage(0))
@@ -68,11 +68,11 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <div>
-        <button onClick={() => prevPage()}>Prev</button>
-        <h3>{!isFilterRequest ? Math.floor(currentPage / 50 + 1) : (filterCurrentPage / 50 + 1)}</h3>
-        <button onClick={() => nextPage()}>Next</button>
+    <div className={s.App}>
+      <div className={s.App__pagging}>
+        <button className={s.App__btn} onClick={() => prevPage()}>Prev</button>
+        <h3 className={s.App__page}>{!isFilterRequest ? Math.floor(currentPage / 50 + 1) : (filterCurrentPage / 50 + 1)}</h3>
+        <button className={s.App__btn} onClick={() => nextPage()}>Next</button>
       </div>
       <DropDown />
       <ProductList />

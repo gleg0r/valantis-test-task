@@ -1,5 +1,7 @@
 //colors
 $blueColor: #409df5;
+$blackColor: #282828;
+$whiteColor: #FDFAFF;
 
 //animations
 @keyframes loading {
@@ -9,4 +11,69 @@ $blueColor: #409df5;
   100% {
     transform: rotate(360deg);
   }
+}
+
+@-moz-keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes appearing {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes appearing {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes   appearing {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+//mixins 
+
+@mixin RobotoRegular {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@mixin RobotoMedium {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+@mixin RobotoBold {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }

@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import filterData from "../helpers/filterData";
 import dateHelper from "../helpers/dateHelper";
 import md5 from "md5";
 import errorHandler from "../helpers/errorHandler";
@@ -18,6 +17,7 @@ export const fetchData = createAsyncThunk(
         params: params.params
       })
     }
+    console.log(params);
     const ids = await fetch('https://api.valantis.store:41000/', options)
     .then(res => res.ok ? res.json() : Promise.reject(res))
     .catch(err => {console.log(err.status, errorHandler(err.status))});
@@ -75,8 +75,7 @@ const apiSlice = createSlice({
     });
     builder.addCase(fetchData.fulfilled, (state, action) => {
         state.ids = action.payload.ids.result;
-        console.log(action.payload.items)
-        state.items= action.payload.items ? action.payload.items.result.filter((v,i,a)=>a.findIndex(v2=>(v2.id===v.id))===i) : [];
+        state.items= action.payload.items ? action.payload.items.result.filter((value,index,arr)=>arr.findIndex(nextValue=>(nextValue.id===value.id))===index) : [];
         state.status = action.payload.items ? 'resolved' : 'error';
       }
     );

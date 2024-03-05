@@ -5,16 +5,15 @@ export default function ProductList() {
   const { items, status } = useSelector(state => state.getData);
 
   return ( 
-    status === 'resolved' ? <div> 
+    status === 'resolved' ? <div className={s.products}> 
       {
-       items.length !== 0 ? items.map((item, index) => {
+       items.length !== 0 ? items.map((item) => {
           return (
-          <ul key={index}>
-            <li>{index}</li>
-            <li>{item.brand !== null ? item.brand : "This product doesn't have brand"}</li>
-            <li>{item.id}</li>
-            <li>{item.price}</li>
-            <li>{item.product}</li>
+          <ul className={s.products__list} key={item.id}>
+            <li className={s.products__item}>{item.id}</li>
+            <li className={s.products__item}>{item.product}</li>
+            <li className={s.products__item}>{item.price} ₽</li>
+            <li className={s.products__item}>{item.brand !== null ? item.brand : "This product doesn't have brand"}</li>
           </ul>
           )
         })
