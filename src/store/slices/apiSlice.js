@@ -4,39 +4,50 @@ import md5 from "md5";
 import errorHandler from "../helpers/errorHandler";
 
 export const fetchData = createAsyncThunk(
-  'api/fetchData',
-  async function(params) {
+  "api/fetchData",
+  async function (params) {
     const options = {
-      method: 'POST',
+      method: "POST",
       headers: {
         "X-Auth": md5(`Valantis_${dateHelper()}`),
-        "Content-Type": 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         action: params.action,
-        params: params.params
-      })
-    }
-    console.log(params);
-    const ids = await fetch('https://api.valantis.store:41000/', options)
-    .then(res => res.ok ? res.json() : Promise.reject(res))
-    .catch(err => {console.log(err.status, errorHandler(err.status))});
-    const items = await fetch('https://api.valantis.store:41000/', {
-    method: 'POST',
-    headers: options.headers,
-    body: JSON.stringify({
-      action: "get_items",
-      params: {"ids": !params.filter.isFilterRequest ? ids.result : ids.result.slice(params.filter.filterCurrentPage, params.filter.filterProductsPerPage)}
+        params: params.params,
+      }),
+    };
+    const ids = await fetch("https://api.valantis.store:41000/", options)
+      .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+      .catch((err) => {
+        console.log(err.status, errorHandler(err.status));
+      });
+    const items = await fetch("https://api.valantis.store:41000/", {
+      method: "POST",
+      headers: options.headers,
+      body: JSON.stringify({
+        action: "get_items",
+        params: {
+          ids: !params.filter.isFilterRequest
+            ? ids.result
+            : ids.result.slice(
+                params.filter.filterCurrentPage,
+                params.filter.filterProductsPerPage
+              ),
+        },
+      }),
     })
-  }).then(res => res.ok ? res.json() : Promise.reject(res))
-    .catch(err => {console.log(err.status, errorHandler(err.status))})
+      .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+      .catch((err) => {
+        console.log(err.status, errorHandler(err.status));
+      });
 
-    return { ids, items }
+    return { ids, items };
   }
-)
+);
 
 const apiSlice = createSlice({
-  name: 'api',
+  name: "api",
   initialState: {
     ids: [],
     items: [],
@@ -57,7 +68,7 @@ const apiSlice = createSlice({
     },
     setProductPerPage(state, action) {
       state.productsPerPage = action.payload;
-    }, 
+    },
     setTypeRequest(state, action) {
       state.isFilterRequest = action.payload;
     },
@@ -66,25 +77,29 @@ const apiSlice = createSlice({
     },
     setFilterProductsPerPage(state, action) {
       state.filterProductsPerPage = action.payload;
-    }
+    },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(fetchData.pending, (state) => {
-      state.status = 'loading';
+      state.status = "loading";
       state.error = null;
     });
     builder.addCase(fetchData.fulfilled, (state, action) => {
-        state.ids = action.payload.ids.result;
-        state.items= action.payload.items ? action.payload.items.result.filter((value,index,arr)=>arr.findIndex(nextValue=>(nextValue.id===value.id))===index) : [];
-        state.status = action.payload.items ? 'resolved' : 'error';
-      }
-    );
+      state.ids = action.payload.ids.result;
+      state.items = action.payload.items
+        ? action.payload.items.result.filter(
+            (value, index, arr) =>
+              arr.findIndex((nextValue) => nextValue.id === value.id) === index
+          )
+        : [];
+      state.status = action.payload.items ? "resolved" : "error";
+    });
     builder.addCase(fetchData.rejected, (state, action) => {
-      state.status = 'error';
+      state.status = "error";
       state.error = action.payload;
-    })
-  }
-})
+    });
+  },
+});
 
 export const {
   setStatus,
@@ -92,7 +107,7 @@ export const {
   setProductPerPage,
   setTypeRequest,
   setFilterCurrentPage,
-  setFilterProductsPerPage
+  setFilterProductsPerPage,
 } = apiSlice.actions;
 
 export default apiSlice.reducer;
